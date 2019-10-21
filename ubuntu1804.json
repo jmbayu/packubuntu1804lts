@@ -1,17 +1,32 @@
 {
   "variables": {
-    "version": ""
+    "version": "1.0"
   },
   "provisioners": [
     {
+      "type": "file",
+      "destination": "/tmp/proxy.env",
+      "source": "./http/proxy.env"
+    },
+    {
+      "type": "file",
+      "destination": "/tmp/90proxy.conf",
+      "source": "./http/90proxy.conf"
+    },
+    {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'mobile' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/ansible.sh"
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'mobile' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/setup.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'mobile' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/zmisc.sh"
     },
     {
       "type": "ansible-local",
@@ -20,7 +35,7 @@
     },
     {
       "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "execute_command": "echo 'mobile' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/cleanup.sh"
     }
   ],
@@ -40,12 +55,12 @@
         " debian-installer=en_US<wait>",
         " fb=false<wait>",
         " initrd=/install/initrd.gz<wait>",
-        " kbd-chooser/method=us<wait>",
-        " keyboard-configuration/layout=USA<wait>",
-        " keyboard-configuration/variant=USA<wait>",
+        " kbd-chooser/method=de<wait>",
+        " keyboard-configuration/layout=DE<wait>",
+        " keyboard-configuration/variant=DE<wait>",
         " locale=en_US<wait>",
         " netcfg/get_domain=vm<wait>",
-        " netcfg/get_hostname=vagrant<wait>",
+        " netcfg/get_hostname=clusternode<wait>",
         " grub-installer/bootdev=/dev/sda<wait>",
         " noapic<wait>",
         " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg<wait>",
@@ -59,18 +74,18 @@
       "http_directory": "http",
       "iso_urls": [
         "iso/ubuntu-18.04.3-server-amd64.iso",
-        "http://cdimage.ubuntu.com/ubuntu/releases/bionic/release/ubuntu-18.04.3-server-amd64.iso"
+        "http://ftp-stud.hs-esslingen.de/Mirrors/cdimage.ubuntu.com/releases/18.04.3/release/ubuntu-18.04.3-server-amd64.iso"
       ],
       "iso_checksum_type": "sha256",
       "iso_checksum": "7d8e0055d663bffa27c1718685085626cb59346e7626ba3d3f476322271f573e",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
+      "ssh_username": "mobile",
+      "ssh_password": "mobile",
       "ssh_port": 22,
       "ssh_wait_timeout": "10000s",
-      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "shutdown_command": "echo 'mobile'|sudo -S shutdown -P now",
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "packer-ubuntu-18.04-amd64",
+      "vm_name": "cnode-ubuntu-18.04-amd64",
       "vboxmanage": [
         [
           "modifyvm",
@@ -92,11 +107,6 @@
       {
         "output": "builds/{{.Provider}}-ubuntu1804.box",
         "type": "vagrant"
-      },
-      {
-        "type": "vagrant-cloud",
-        "box_tag": "geerlingguy/ubuntu1804",
-        "version": "{{user `version`}}"
       }
     ]
   ]

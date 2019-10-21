@@ -4,8 +4,8 @@
   gather_facts: yes
 
   roles:
-    - geerlingguy.nfs
-    - geerlingguy.packer-debian
+    - jmbayu.nfs
+    - jmbayu.packer_debian
 
   tasks:
     - name: Install some helpful utilities.

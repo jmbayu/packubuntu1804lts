@@ -1,7 +1,8 @@
 #!/bin/bash -eux
 
-# Add vagrant user to sudoers.
-echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers
+# Add mobile user to sudoers.
+echo "mobile        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers.d/mobile
+ls -l /etc/sudoers.d/
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
 # Disable daily apt unattended updates.

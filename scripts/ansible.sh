@@ -1,5 +1,8 @@
 #!/bin/bash -eux
 
+# set proxy
+. /tmp/proxy.env
+
 # Install Ansible repository.
 apt -y update && apt-get -y upgrade
 apt -y install software-properties-common
